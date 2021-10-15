@@ -5,50 +5,41 @@ import re
 import random
 
 driver = webdriver.Chrome('/Users/skippy/Desktop/NYCDSA/chromedriver')
-driver.get('https://www.airbnb.com/s/experiences/online')
 
-element = driver.find_element_by_xpath("//button[@class='_pmpl8qu']")
 
-# Get scroll height
-last_height = driver.execute_script("return document.body.scrollHeight")
+def collect_href():
 
-group_button = driver.find_element_by_xpath(
-    "//span[@aria-label='Family friendly']")
+    page_hrefs = []
 
-page_hrefs = []
+    last_height = driver.execute_script("return document.body.scrollHeight")
 
-try:
-    time.sleep(2)
-    group_button.click()
-except:
-    time.sleep(2)
-    group_button.click()
+    next_button = driver.find_element_by_xpath("//button[@class='_pmpl8qu']")
 
-while True:
+    while True:
 
-    wait_time = random.randrange(2, 4)
+        wait_time = random.randrange(2, 4)
 
-    time.sleep(wait_time)
-
-    # Scroll down to bottom
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-    try:
-        time.sleep(wait_time)
-        element.click()
-    finally:
-        # Wait to load page
         time.sleep(wait_time)
 
-        # Calculate new scroll height and compare with last scroll height
-        new_height = driver.execute_script("return document.body.scrollHeight")
-        if new_height == last_height:
-            elems = driver.find_elements_by_xpath("//a[@class='_1jhvjuo']")
-            for ele in elems:
-                page_hrefs.append(ele.get_attribute('href'))
-            break
-        last_height = new_height
+        # Scroll down to bottom
+        driver.execute_script(
+            "window.scrollTo(0, document.body.scrollHeight);")
 
-print(page_hrefs[:5])
-print(len(page_hrefs))
-driver.close()
+        try:
+            time.sleep(wait_time)
+            next_button.click()
+        finally:
+            # Wait to load page
+            time.sleep(wait_time)
+
+            # Calculate new scroll height and compare with last scroll height
+            new_height = driver.execute_script(
+                "return document.body.scrollHeight")
+            if new_height == last_height:
+                elems = driver.find_elements_by_xpath("//a[@class='_1jhvjuo']")
+                for ele in elems:
+                    page_hrefs.append(ele.get_attribute('href'))
+                break
+            last_height = new_height
+
+    return page_hrefs
