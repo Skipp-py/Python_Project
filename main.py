@@ -19,9 +19,10 @@ category_buttons = collector.driver.find_elements_by_xpath(
 next_button = collector.driver.find_element_by_xpath(
     "//button[@aria-label='Next' and @class='_137uqvg']")
 
-d = {}
+final_dict = {'Experience_Name': [], 'Rating': [], 'Reviews': [], 'City': [], 'Country': [], 'Duration': [], 'Languages': [], 'Cost_Adult': [], 'Cost_Child': [], 'Cost_Infant': [],
+              'Cost_Infant': [], 'Group_Start_Cost': [], 'Group_Limit': [], 'Group_Discount': [], 'Sold_Out': []}
 
-for i in range(15, 17):
+for i in range(9, 10):
     try:
         time.sleep(2)
         category_buttons[i].click()
@@ -37,13 +38,16 @@ for i in range(15, 17):
     finally:
         time.sleep(2)
         lst = collector.collect_href()
-        d[category_buttons[i].text] = lst[:5]
-        collector.driver.execute_script("window.history.go(-1)")
+        for url in lst:
+            time.sleep(2)
+            d = collector.page_info(url)
+            for k, v in d.items():
+                if k in final_dict.keys():
+                    final_dict[k] += v
+            else:
+                final_dict[k] = v
+        collector.driver.execute_script("window.history.go(-2)")
 
-# time.sleep(4)
-# good_for_groups = collector.collect_href()
 
-# print(good_for_groups[:5])
-
-print(d.items())
+print(final_dict.items())
 collector.driver.close()
