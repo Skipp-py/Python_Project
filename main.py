@@ -26,7 +26,7 @@ final_dict = {'Experience_Name': [], 'Rating': [], 'Reviews': [], 'City': [], 'C
 
 unique_urls = []
 
-for i in range(4, 5):
+for i in range(16, 17):
     try:
         time.sleep(1)
         category_buttons[i].click()
@@ -72,6 +72,6 @@ print('Group_Limit: ' + str(len(final_dict['Group_Limit'])))
 
 df = pd.DataFrame.from_dict(final_dict)
 
-df.to_csv('project_baking.csv', index=False)
+df.to_csv('project_accessibility.csv', index=False)
 
 collector.driver.close()

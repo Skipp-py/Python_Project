@@ -30,6 +30,8 @@ def collect_href():
             try:
                 time.sleep(2)
                 load_button.click()
+            except:
+                continue
             finally:
                 # Wait to load page
                 time.sleep(2)
